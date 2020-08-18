@@ -79,6 +79,10 @@
 #include <Fonts/FreeSans18pt7b.h>
 #include <Fonts/FreeSans24pt7b.h>
 #include <Fonts/FreeSansBold24pt7b.h>
+#include <Fonts/FreeMonoBold24pt7b.h>
+#include <Fonts/FreeMonoBold9pt7b.h>
+#include <Fonts/FreeMono9pt7b.h>
+#include <Fonts/FreeMonoBold12pt7b.h>
 
 #include <Arduino_LSM9DS1.h> // acceleromter, gyro
 #include <Arduino_LPS22HB.h> // Arduino_v pressure sensor
@@ -374,21 +378,30 @@ void loop(void)
 #define DISP_BOX_SPEED_OFFSET_Y 0
 #define DISP_BOX_SPEED_SIZE_X COLUMN_1_WIDTH
 #define DISP_BOX_SPEED_SIZE_Y 50
+#define DISP_BOX_SPEED_VALUE_X DISP_BOX_SPEED_OFFSET_X + 30
+#define DISP_BOX_SPEED_VALUE_Y DISP_BOX_SPEED_OFFSET_Y + 35
+#define DISP_BOX_SPEED_VALUE_DEC_X DISP_BOX_SPEED_OFFSET_X + 85
+#define DISP_BOX_SPEED_VALUE_DEC_Y DISP_BOX_SPEED_OFFSET_Y + 20
+  //#define DISP_BOX_SPEED_UNITS_X DISP_BOX_SPEED_OFFSET_X + DISP_BOX_SPEED_SIZE_X - 35
+#define DISP_BOX_SPEED_UNITS_X DISP_BOX_SPEED_OFFSET_X + DISP_BOX_SPEED_SIZE_X - 27
+#define DISP_BOX_SPEED_UNITS_Y DISP_BOX_SPEED_OFFSET_Y + DISP_BOX_SPEED_SIZE_Y - 20
 
-  display.setFont(&FreeSansBold24pt7b);
-  sprintf(tempDispString, "%.0f", floor(speedKph));
-  display.getTextBounds(tempDispString, 0, 0, &x1, &y1, &w1, &h1);
-  display.setFont(&FreeSans9pt7b);
-  sprintf(tempDispString2, ".%.0f km/h", (speedKph - floor(speedKph)) * 10);
-  display.getTextBounds(tempDispString2, 0, 0, &x2, &y2, &w2, &h2);
+  display.setFont(&FreeMonoBold24pt7b);
+  sprintf(tempDispString, "%2.0f", (float)22/*floor(speedKph)*/);
+  display.setFont(&FreeMono9pt7b);
+  sprintf(tempDispString2, ".%1.0f", floor((speedKph - floor(speedKph)) * 10));
 
-  display.setCursor(DISP_BOX_SPEED_OFFSET_X + ((DISP_BOX_SPEED_SIZE_X - w1 - w2) / 2), DISP_BOX_SPEED_OFFSET_Y + h1);
-  display.setFont(&FreeSansBold24pt7b);
+  display.setCursor(DISP_BOX_SPEED_VALUE_X, DISP_BOX_SPEED_VALUE_Y);
+  display.setFont(&FreeMonoBold24pt7b);
   display.print(tempDispString);
 
   display.setFont(&FreeSans9pt7b);
-  display.setCursor(DISP_BOX_SPEED_OFFSET_X + ((DISP_BOX_SPEED_SIZE_X - w1 - w2) / 2) + w1 + 5, DISP_BOX_SPEED_OFFSET_Y + h1 - h2 / 2);
+  display.setCursor(DISP_BOX_SPEED_VALUE_DEC_X, DISP_BOX_SPEED_VALUE_DEC_Y);
   display.print(tempDispString2);
+
+  display.setFont();
+  display.setCursor(DISP_BOX_SPEED_UNITS_X, DISP_BOX_SPEED_UNITS_Y);
+  display.print("km/h");
 
   display.drawFastHLine(DISP_BOX_SPEED_OFFSET_X, DISP_BOX_SPEED_OFFSET_Y + DISP_BOX_SPEED_SIZE_Y, DISP_BOX_SPEED_SIZE_X, BLACK);
   display.drawFastVLine(DISP_BOX_SPEED_OFFSET_X + DISP_BOX_SPEED_SIZE_X, DISP_BOX_SPEED_OFFSET_Y, DISP_BOX_SPEED_OFFSET_Y + DISP_BOX_SPEED_SIZE_Y, BLACK);
@@ -399,22 +412,30 @@ void loop(void)
 #define DISP_BOX_ODO_OFFSET_Y DISP_BOX_SPEED_SIZE_Y
 #define DISP_BOX_ODO_SIZE_X COLUMN_1_WIDTH
 #define DISP_BOX_ODO_SIZE_Y 35
-#define DISP_BOX_ODO_VALUE_X_OFFSET DISP_BOX_ODO_OFFSET_X + 30
-#define DISP_BOX_ODO_UNITS_X_OFFSET DISP_BOX_ODO_OFFSET_X + DISP_BOX_ODO_SIZE_X-15
-#define DISP_BOX_ODO_UNITS_Y_OFFSET DISP_BOX_ODO_OFFSET_Y + 10
+#define DISP_BOX_ODO_VALUE_X_OFFSET DISP_BOX_ODO_OFFSET_X + 43
+#define DISP_BOX_ODO_VALUE_Y_OFFSET DISP_BOX_ODO_OFFSET_Y + 25
+#define DISP_BOX_ODO_VALUE_DEC_X_OFFSET DISP_BOX_ODO_OFFSET_X + 82
+#define DISP_BOX_ODO_VALUE_DEC_Y_OFFSET DISP_BOX_ODO_OFFSET_Y + 10
+#define DISP_BOX_ODO_UNITS_X_OFFSET DISP_BOX_ODO_OFFSET_X + DISP_BOX_ODO_SIZE_X - 15
+#define DISP_BOX_ODO_UNITS_Y_OFFSET DISP_BOX_ODO_OFFSET_Y + DISP_BOX_ODO_SIZE_Y - 18
+#define DISP_BOX_ODO_LABEL_Y_OFFSET DISP_BOX_ODO_OFFSET_Y + DISP_BOX_ODO_SIZE_Y - 10
 
   display.setFont();
-  display.setCursor(DISP_BOX_ODO_OFFSET_X, DISP_BOX_ODO_UNITS_Y_OFFSET);
-  display.print("Odo:");
+  display.setCursor(DISP_BOX_ODO_OFFSET_X, DISP_BOX_ODO_LABEL_Y_OFFSET);
+  display.print("Total");
+
   display.setCursor(DISP_BOX_ODO_UNITS_X_OFFSET, DISP_BOX_ODO_UNITS_Y_OFFSET);
   display.print("km");
 
   display.setFont(&FreeSans12pt7b);
-  sprintf(tempDispString, "%5.2f", 537.84/*odometer*/);
-  display.getTextBounds(tempDispString, 0, 0, &x1, &y1, &w1, &h1);
-
-  display.setCursor(DISP_BOX_ODO_VALUE_X_OFFSET, DISP_BOX_ODO_OFFSET_Y + h1 + 4);
+  display.setCursor(DISP_BOX_ODO_VALUE_X_OFFSET, DISP_BOX_ODO_VALUE_Y_OFFSET);
+  sprintf(tempDispString, "%2.0f", (float)537.84/*odometer*/);
   display.print(tempDispString);
+
+  display.setFont();
+  display.setCursor(DISP_BOX_ODO_VALUE_DEC_X_OFFSET, DISP_BOX_ODO_VALUE_DEC_Y_OFFSET);
+  sprintf(tempDispString2, ".%2.0f", floor((537.84/*odometer*/ - floor(537.84/*odometer*/)) * 100));
+  display.print(tempDispString2);
 
   display.drawFastHLine(DISP_BOX_ODO_OFFSET_X, DISP_BOX_ODO_OFFSET_Y + DISP_BOX_ODO_SIZE_Y, DISP_BOX_ODO_SIZE_X, BLACK);
   display.drawFastVLine(DISP_BOX_ODO_OFFSET_X + DISP_BOX_ODO_SIZE_X, DISP_BOX_ODO_OFFSET_Y, DISP_BOX_ODO_SIZE_Y, BLACK);
@@ -424,22 +445,13 @@ void loop(void)
 #define DISP_BOX_MOV_TIME_OFFSET_Y DISP_BOX_ODO_OFFSET_Y+DISP_BOX_ODO_SIZE_Y
 #define DISP_BOX_MOV_TIME_SIZE_X COLUMN_1_WIDTH
 #define DISP_BOX_MOV_TIME_SIZE_Y 35
-#define DISP_BOX_MOV_TIME_VALUE_X_OFFSET DISP_BOX_MOV_TIME_OFFSET_X +20
-#define DISP_BOX_MOV_TIME_UNITS_X_OFFSET DISP_BOX_MOV_TIME_OFFSET_X + DISP_BOX_MOV_TIME_SIZE_X-20
-#define DISP_BOX_MOV_TIME_UNITS_Y_OFFSET DISP_BOX_MOV_TIME_OFFSET_Y + 10
-/*
-  display.setFont();
-  display.setCursor(DISP_BOX_MOV_TIME_OFFSET_X, DISP_BOX_MOV_TIME_OFFSET_Y + 3);
-  display.print("Moving");
-  display.setCursor(DISP_BOX_MOV_TIME_OFFSET_X, DISP_BOX_MOV_TIME_OFFSET_Y + 13);
-  display.print("Time:");
-*/
+#define DISP_BOX_MOV_TIME_VALUE_X_OFFSET DISP_BOX_MOV_TIME_OFFSET_X + 20
+#define DISP_BOX_MOV_TIME_VALUE_Y_OFFSET DISP_BOX_MOV_TIME_OFFSET_Y + 24
+
   display.setFont(&FreeSans12pt7b);
   unixSeconds = movingTimeMS / 1000;
   strftime(tempDispString, 50, "%k:%M:%S", localtime(&unixSeconds));
-  display.getTextBounds(tempDispString, 0, 0, &x1, &y1, &w1, &h1);
-  display.setCursor(DISP_BOX_MOV_TIME_VALUE_X_OFFSET, DISP_BOX_MOV_TIME_OFFSET_Y + h1 + 4);
-
+  display.setCursor(DISP_BOX_MOV_TIME_VALUE_X_OFFSET, DISP_BOX_MOV_TIME_VALUE_Y_OFFSET);
   display.print(tempDispString);
 
   display.drawFastHLine(DISP_BOX_MOV_TIME_OFFSET_X, DISP_BOX_MOV_TIME_OFFSET_Y + DISP_BOX_MOV_TIME_SIZE_Y, DISP_BOX_MOV_TIME_SIZE_X, BLACK);
@@ -450,27 +462,31 @@ void loop(void)
 #define DISP_BOX_AV_SPD_OFFSET_Y DISP_BOX_MOV_TIME_OFFSET_Y+DISP_BOX_MOV_TIME_SIZE_Y
 #define DISP_BOX_AV_SPD_SIZE_X COLUMN_1_WIDTH
 #define DISP_BOX_AV_SPD_SIZE_Y 35
-#define DISP_BOX_AV_SPD_VALUE_X_OFFSET DISP_BOX_AV_SPD_OFFSET_X + 45
-#define DISP_BOX_AV_SPD_UNITS_X_OFFSET DISP_BOX_AV_SPD_OFFSET_X + DISP_BOX_AV_SPD_SIZE_X-25
-#define DISP_BOX_AV_SPD_UNITS_Y_OFFSET DISP_BOX_AV_SPD_OFFSET_Y + 10
+#define DISP_BOX_AV_SPD_VALUE_X_OFFSET DISP_BOX_AV_SPD_OFFSET_X + 55
+#define DISP_BOX_AV_SPD_VALUE_Y_OFFSET DISP_BOX_AV_SPD_OFFSET_Y + 20
+#define DISP_BOX_AV_SPD_VALUE_DEC_X_OFFSET DISP_BOX_AV_SPD_OFFSET_X + 82
+#define DISP_BOX_AV_SPD_VALUE_DEC_Y_OFFSET DISP_BOX_AV_SPD_OFFSET_Y + 10
+#define DISP_BOX_AV_SPD_UNITS_X_OFFSET DISP_BOX_AV_SPD_OFFSET_X + DISP_BOX_AV_SPD_SIZE_X - 27
+#define DISP_BOX_AV_SPD_UNITS_Y_OFFSET DISP_BOX_AV_SPD_OFFSET_Y + DISP_BOX_AV_SPD_SIZE_Y - 18
+#define DISP_BOX_AV_SPD_LABEL_Y_OFFSET DISP_BOX_AV_SPD_OFFSET_Y + DISP_BOX_AV_SPD_SIZE_Y - 10
 
   display.setFont();
-  display.setCursor(DISP_BOX_AV_SPD_OFFSET_X, DISP_BOX_AV_SPD_OFFSET_Y + 3);
+  display.setCursor(DISP_BOX_AV_SPD_OFFSET_X, DISP_BOX_AV_SPD_LABEL_Y_OFFSET);
   display.print("Average");
-  /*
-  display.setCursor(DISP_BOX_AV_SPD_OFFSET_X, DISP_BOX_AV_SPD_OFFSET_Y + 13);
-  display.print("Speed:");
-  */
 
   display.setCursor(DISP_BOX_AV_SPD_UNITS_X_OFFSET, DISP_BOX_AV_SPD_UNITS_Y_OFFSET);
   display.print("km/h");
 
+  display.setCursor(DISP_BOX_AV_SPD_VALUE_X_OFFSET, DISP_BOX_AV_SPD_VALUE_Y_OFFSET);
+  //display.setFont(&FreeMonoBold12pt7b);
   display.setFont(&FreeSans12pt7b);
-  sprintf(tempDispString, "%3.1f", 25.4/*averageSpeed*/);
-  display.getTextBounds(tempDispString, 0, 0, &x1, &y1, &w1, &h1);
-
-  display.setCursor(DISP_BOX_AV_SPD_VALUE_X_OFFSET, DISP_BOX_AV_SPD_OFFSET_Y + h1 + 4);
+  sprintf(tempDispString, "%2.0f", (float)25.4/*averageSpeed*/);
   display.print(tempDispString);
+
+  display.setFont();
+  display.setCursor(DISP_BOX_AV_SPD_VALUE_DEC_X_OFFSET, DISP_BOX_AV_SPD_VALUE_DEC_Y_OFFSET);
+  sprintf(tempDispString2, ".%1.0f", floor((25.4/*averageSpeed*/ - floor(25.4/*averageSpeed*/)) * 10));
+  display.print(tempDispString2);
 
   display.drawFastHLine(DISP_BOX_AV_SPD_OFFSET_X, DISP_BOX_AV_SPD_OFFSET_Y + DISP_BOX_AV_SPD_SIZE_Y, DISP_BOX_AV_SPD_SIZE_X, BLACK);
   display.drawFastVLine(DISP_BOX_AV_SPD_OFFSET_X + DISP_BOX_AV_SPD_SIZE_X, DISP_BOX_AV_SPD_OFFSET_Y, DISP_BOX_AV_SPD_SIZE_Y, BLACK);
@@ -481,17 +497,19 @@ void loop(void)
 #define DISP_BOX_CADENCE_OFFSET_Y 0
 #define DISP_BOX_CADENCE_SIZE_X COLUMN_2_WIDTH
 #define DISP_BOX_CADENCE_SIZE_Y 50
-  display.setFont(&FreeSansBold24pt7b);
-  sprintf(tempDispString, "%.f", cadenceRpm);
-  display.getTextBounds(tempDispString, 0, 0, &x1, &y1, &w1, &h1);
+#define DISP_BOX_CADENCE_VALUE_X DISP_BOX_CADENCE_OFFSET_X + 15
+#define DISP_BOX_CADENCE_VALUE_Y DISP_BOX_CADENCE_OFFSET_Y + 35
+#define DISP_BOX_CADENCE_UNITS_X DISP_BOX_CADENCE_OFFSET_X + DISP_BOX_CADENCE_SIZE_X - 23
+#define DISP_BOX_CADENCE_UNITS_Y DISP_BOX_CADENCE_OFFSET_Y + DISP_BOX_CADENCE_SIZE_Y - 20
+
+  display.setFont(&FreeMonoBold24pt7b);
+  display.setCursor(DISP_BOX_CADENCE_VALUE_X, DISP_BOX_CADENCE_VALUE_Y);
+  sprintf(tempDispString, "%3.f", (float)76/*cadenceRpm*/);
+  display.print(tempDispString);
+
   display.setFont();
-  display.getTextBounds("rpm", 0, 0, &x2, &y2, &w2, &h2);
-  display.setCursor(DISP_BOX_CADENCE_OFFSET_X + ((DISP_BOX_CADENCE_SIZE_X - w1 - w2) / 2), DISP_BOX_CADENCE_OFFSET_Y + h1);
-  display.setFont(&FreeSansBold24pt7b);
-  display.println(tempDispString);
-  display.setFont();
-  display.setCursor(DISP_BOX_CADENCE_OFFSET_X + ((DISP_BOX_CADENCE_SIZE_X - w1 - w2) / 2) + w1, DISP_BOX_CADENCE_OFFSET_Y + h1 - h2 / 2);
-  display.println(" rpm");
+  display.setCursor(DISP_BOX_CADENCE_UNITS_X, DISP_BOX_CADENCE_UNITS_Y);
+  display.print("rpm");
 
   display.drawFastHLine(DISP_BOX_CADENCE_OFFSET_X, DISP_BOX_CADENCE_OFFSET_Y + DISP_BOX_CADENCE_SIZE_Y, DISP_BOX_CADENCE_SIZE_X, BLACK);
   display.drawFastVLine(DISP_BOX_CADENCE_OFFSET_X + DISP_BOX_CADENCE_SIZE_X, DISP_BOX_CADENCE_OFFSET_Y, DISP_BOX_CADENCE_OFFSET_Y + DISP_BOX_CADENCE_SIZE_Y, BLACK);
@@ -499,27 +517,26 @@ void loop(void)
 
   /***** Cadence Odometer box drawing *****/
 #define DISP_BOX_CAD_ODO_OFFSET_X COLUMN_1_WIDTH
-#define DISP_BOX_CAD_ODO_OFFSET_Y DISP_BOX_CADENCE_SIZE_Y
+#define DISP_BOX_CAD_ODO_OFFSET_Y DISP_BOX_SPEED_SIZE_Y
 #define DISP_BOX_CAD_ODO_SIZE_X COLUMN_2_WIDTH
 #define DISP_BOX_CAD_ODO_SIZE_Y 35
 #define DISP_BOX_CAD_ODO_VALUE_X_OFFSET DISP_BOX_CAD_ODO_OFFSET_X + 30
-#define DISP_BOX_CAD_ODO_UNITS_X_OFFSET DISP_BOX_CAD_ODO_OFFSET_X + DISP_BOX_CAD_ODO_SIZE_X-25
-#define DISP_BOX_CAD_ODO_UNITS_Y_OFFSET DISP_BOX_CAD_ODO_OFFSET_Y + 10
+#define DISP_BOX_CAD_ODO_VALUE_Y_OFFSET DISP_BOX_CAD_ODO_OFFSET_Y + 25
+#define DISP_BOX_CAD_ODO_UNITS_X_OFFSET DISP_BOX_CAD_ODO_OFFSET_X + DISP_BOX_CAD_ODO_SIZE_X - 25
+#define DISP_BOX_CAD_ODO_UNITS_Y_OFFSET DISP_BOX_CAD_ODO_OFFSET_Y + DISP_BOX_CAD_ODO_SIZE_Y - 18
+#define DISP_BOX_CAD_ODO_LABEL_X_OFFSET DISP_BOX_CAD_ODO_OFFSET_X + 2
+#define DISP_BOX_CAD_ODO_LABEL_Y_OFFSET DISP_BOX_CAD_ODO_OFFSET_Y + DISP_BOX_CAD_ODO_SIZE_Y - 10
 
   display.setFont();
-/*  
-  display.setCursor(DISP_BOX_CAD_ODO_OFFSET_X, DISP_BOX_CAD_ODO_OFFSET_Y + 3);
-  display.print("Cad");
-  display.setCursor(DISP_BOX_CAD_ODO_OFFSET_X, DISP_BOX_CAD_ODO_OFFSET_Y + 13);
-  display.print("Odo:");
-  */
+  display.setCursor(DISP_BOX_CAD_ODO_LABEL_X_OFFSET, DISP_BOX_CAD_ODO_LABEL_Y_OFFSET);
+  display.print("Total");
+
   display.setCursor(DISP_BOX_CAD_ODO_UNITS_X_OFFSET, DISP_BOX_CAD_ODO_UNITS_Y_OFFSET);
   display.print("revs");
 
   display.setFont(&FreeSans12pt7b);
-  sprintf(tempDispString, "%3.f", 537.84/*cadenceOdometer*/);
-  display.getTextBounds(tempDispString, 0, 0, &x1, &y1, &w1, &h1);
-  display.setCursor(DISP_BOX_CAD_ODO_VALUE_X_OFFSET, DISP_BOX_CAD_ODO_OFFSET_Y + h1 + 4);
+  sprintf(tempDispString, "%5.0f", (float)34752/*cadenceOdometer*/);  // after 6-8 hours riding will easily be in tens of thousands
+  display.setCursor(DISP_BOX_CAD_ODO_VALUE_X_OFFSET, DISP_BOX_CAD_ODO_VALUE_Y_OFFSET);
   display.print(tempDispString);
 
   display.drawFastHLine(DISP_BOX_CAD_ODO_OFFSET_X, DISP_BOX_CAD_ODO_OFFSET_Y + DISP_BOX_CAD_ODO_SIZE_Y, DISP_BOX_CAD_ODO_SIZE_X, BLACK);
@@ -531,50 +548,40 @@ void loop(void)
 #define DISP_BOX_CAD_MOV_TIME_SIZE_X COLUMN_2_WIDTH
 #define DISP_BOX_CAD_MOV_TIME_SIZE_Y 35
 #define DISP_BOX_CAD_MOV_TIME_VALUE_X_OFFSET DISP_BOX_CAD_MOV_TIME_OFFSET_X + 20
-#define DISP_BOX_CAD_MOV_TIME_UNITS_X_OFFSET DISP_BOX_CAD_MOV_TIME_OFFSET_X + DISP_BOX_CAD_MOV_TIME_SIZE_X-20
-#define DISP_BOX_CAD_MOV_TIME_UNITS_Y_OFFSET DISP_BOX_CAD_MOV_TIME_OFFSET_Y + 10
+#define DISP_BOX_CAD_MOV_TIME_VALUE_Y_OFFSET DISP_BOX_CAD_MOV_TIME_OFFSET_Y + 24
 
-  display.setFont();
-  /*
-  display.setCursor(DISP_BOX_CAD_MOV_TIME_OFFSET_X, DISP_BOX_CAD_MOV_TIME_OFFSET_Y + 3);
-  display.print("Cad Mov");
-  display.setCursor(DISP_BOX_CAD_MOV_TIME_OFFSET_X, DISP_BOX_CAD_MOV_TIME_OFFSET_Y + 13);
-  display.print("Time:");
-*/
   display.setFont(&FreeSans12pt7b);
   unixSeconds = cadenceMovingTimeMS / 1000;
   strftime(tempDispString, 50, "%k:%M:%S", localtime(&unixSeconds));
-  display.getTextBounds(tempDispString, 0, 0, &x1, &y1, &w1, &h1);
-  display.setCursor(DISP_BOX_CAD_MOV_TIME_VALUE_X_OFFSET, DISP_BOX_CAD_MOV_TIME_OFFSET_Y + h1 + 4);
+  display.setCursor(DISP_BOX_CAD_MOV_TIME_VALUE_X_OFFSET, DISP_BOX_CAD_MOV_TIME_VALUE_Y_OFFSET);
   display.print(tempDispString);
 
   display.drawFastHLine(DISP_BOX_CAD_MOV_TIME_OFFSET_X, DISP_BOX_CAD_MOV_TIME_OFFSET_Y + DISP_BOX_CAD_MOV_TIME_SIZE_Y, DISP_BOX_CAD_MOV_TIME_SIZE_X, BLACK);
   display.drawFastVLine(DISP_BOX_CAD_MOV_TIME_OFFSET_X + DISP_BOX_CAD_MOV_TIME_SIZE_X, DISP_BOX_CAD_MOV_TIME_OFFSET_Y, DISP_BOX_CAD_MOV_TIME_SIZE_Y, BLACK);
 
   /***** Average Cadence box drawing *****/
+
 #define DISP_BOX_AV_CAD_OFFSET_X COLUMN_1_WIDTH
-#define DISP_BOX_AV_CAD_OFFSET_Y DISP_BOX_CAD_MOV_TIME_OFFSET_Y+DISP_BOX_CAD_MOV_TIME_SIZE_Y
+#define DISP_BOX_AV_CAD_OFFSET_Y DISP_BOX_MOV_TIME_OFFSET_Y + DISP_BOX_MOV_TIME_SIZE_Y
 #define DISP_BOX_AV_CAD_SIZE_X COLUMN_2_WIDTH
 #define DISP_BOX_AV_CAD_SIZE_Y 35
-#define DISP_BOX_AV_CAD_VALUE_X_OFFSET DISP_BOX_AV_CAD_OFFSET_X + 45
-#define DISP_BOX_AV_CAD_UNITS_X_OFFSET DISP_BOX_AV_CAD_OFFSET_X + DISP_BOX_AV_CAD_SIZE_X-20
-#define DISP_BOX_AV_CAD_UNITS_Y_OFFSET DISP_BOX_AV_CAD_OFFSET_Y + 10
+#define DISP_BOX_AV_CAD_VALUE_X_OFFSET DISP_BOX_AV_CAD_OFFSET_X + 55
+#define DISP_BOX_AV_CAD_VALUE_Y_OFFSET DISP_BOX_AV_CAD_OFFSET_Y + 22
+#define DISP_BOX_AV_CAD_UNITS_X_OFFSET DISP_BOX_AV_CAD_OFFSET_X + DISP_BOX_AV_CAD_SIZE_X - 25
+#define DISP_BOX_AV_CAD_UNITS_Y_OFFSET DISP_BOX_AV_CAD_OFFSET_Y + DISP_BOX_AV_CAD_SIZE_Y - 18
+#define DISP_BOX_AV_CAD_LABEL_X_OFFSET DISP_BOX_AV_CAD_OFFSET_X + 2
+#define DISP_BOX_AV_CAD_LABEL_Y_OFFSET DISP_BOX_AV_CAD_OFFSET_Y + DISP_BOX_AV_CAD_SIZE_Y - 10
 
   display.setFont();
-  /*
-  display.setCursor(DISP_BOX_AV_CAD_OFFSET_X, DISP_BOX_AV_CAD_OFFSET_Y + 3);
-  display.print("Av.");
-  display.setCursor(DISP_BOX_AV_CAD_OFFSET_X, DISP_BOX_AV_CAD_OFFSET_Y + 13);
-  display.print("Cad:");
-*/
+  display.setCursor(DISP_BOX_AV_CAD_LABEL_X_OFFSET , DISP_BOX_AV_CAD_LABEL_Y_OFFSET);
+  display.print("Average");
+
   display.setCursor(DISP_BOX_AV_CAD_UNITS_X_OFFSET, DISP_BOX_AV_CAD_UNITS_Y_OFFSET);
   display.print("rpm");
 
   display.setFont(&FreeSans12pt7b);
-  sprintf(tempDispString, "%3.1f", 25.4/*averageCadence*/);
-  display.getTextBounds(tempDispString, 0, 0, &x1, &y1, &w1, &h1);
-
-  display.setCursor(DISP_BOX_AV_CAD_VALUE_X_OFFSET, DISP_BOX_AV_CAD_OFFSET_Y + h1 + 4);
+  display.setCursor(DISP_BOX_AV_CAD_VALUE_X_OFFSET, DISP_BOX_AV_CAD_VALUE_Y_OFFSET);
+  sprintf(tempDispString, "%2.0f", (float)82/*averageCadence*/);
   display.print(tempDispString);
 
   display.drawFastHLine(DISP_BOX_AV_CAD_OFFSET_X, DISP_BOX_AV_CAD_OFFSET_Y + DISP_BOX_AV_CAD_SIZE_Y, DISP_BOX_AV_CAD_SIZE_X, BLACK);
@@ -613,24 +620,22 @@ void loop(void)
 #define DISP_BOX_HR_OFFSET_X COLUMN_1_WIDTH + COLUMN_2_WIDTH
 #define DISP_BOX_HR_OFFSET_Y DISP_BOX_TIME_OFFSET_Y+DISP_BOX_TIME_SIZE_Y
 #define DISP_BOX_HR_SIZE_X COLUMN_3_WIDTH
-#define DISP_BOX_HR_SIZE_Y 40
-#define DISP_BOX_HR_VALUE_X DISP_BOX_HR_OFFSET_X+25
-#define DISP_BOX_HR_UNITS_X DISP_BOX_HR_OFFSET_X+20
+#define DISP_BOX_HR_SIZE_Y 35
+#define DISP_BOX_HR_VALUE_X DISP_BOX_HR_OFFSET_X + 8
+#define DISP_BOX_HR_VALUE_Y DISP_BOX_HR_OFFSET_Y + 25
+#define DISP_BOX_HR_UNITS_X DISP_BOX_HR_OFFSET_X + DISP_BOX_HR_SIZE_X - 18
+#define DISP_BOX_HR_UNITS_Y DISP_BOX_HR_OFFSET_Y + DISP_BOX_HR_SIZE_Y - 18
 
   display.setFont(&FreeSans12pt7b);
-  sprintf(tempDispString, "%3.f", 125 /*heartRate*/);
-  display.getTextBounds(tempDispString, 0, 0, &x1, &y1, &w1, &h1);
-  display.setCursor(DISP_BOX_HR_VALUE_X, DISP_BOX_HR_OFFSET_Y + h1+3);
+  sprintf(tempDispString, "%3.f", (float)125 /*heartRate*/);
+  display.setCursor(DISP_BOX_HR_VALUE_X, DISP_BOX_HR_VALUE_Y);
   display.print(tempDispString);
-  
+
   display.setFont();
-  display.setCursor(DISP_BOX_HR_UNITS_X, DISP_BOX_HR_OFFSET_Y + h1+7);
-  display.print(" bpm");
+  display.setCursor(DISP_BOX_HR_UNITS_X, DISP_BOX_HR_UNITS_Y);
+  display.print("bpm");
 
   display.drawFastHLine(DISP_BOX_HR_OFFSET_X, DISP_BOX_HR_SIZE_Y + DISP_BOX_HR_OFFSET_Y, DISP_BOX_HR_SIZE_X, BLACK);
-
-
-
 
   /***** Android Music Box Drawing *****/
 #define DISP_BOX_MUSIC_SIZE_X DISPLAY_WIDTH
@@ -742,12 +747,12 @@ void loop(void)
     display.print(tempDispString);
     dispCurrentLowerOffset -= DISP_BOX_CALLS_SIZE_Y;
   }
-/*
-  display.setFont();
-  display.setCursor(0, DISPLAY_HEIGHT - 100);
-  display.print("Debug: ");
-  display.println(debugString);
-*/
+  /*
+    display.setFont();
+    display.setCursor(0, DISPLAY_HEIGHT - 100);
+    display.print("Debug: ");
+    display.println(debugString);
+  */
 
   /***** Compass Drawing *****/
   // point 1 at magnet_heading
