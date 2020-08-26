@@ -1,12 +1,20 @@
 # Bicylocomputer
-Cycle computer using hardware:
+Cycle computer made from:
 - 4.3" Sharp memory LCD 
 - Arduino Nano 33 BLE.
 - 3.3V voltage regulator
 
 Connects to Gadgetbridge on Android to display notifications, upload fitness data.
 
-Features:
+Features working:
+- Gadgetbridge connection and notifications
+- BLE Speed Sensor (address hard coded)
+- BLE Cadence Sensor (address hard coded)
+- Compass
+- All derived data from above sensors
+- LCD UI
+
+Total Features:
 - works in sunlight
 - low power (can run for months off button cell)
 - BLE connection to smartphone
