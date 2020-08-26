@@ -13,12 +13,12 @@ Features working
   - Notifications from many apps
   - Current song title, artist
   - Time synchronisation
-- BLE Speed Sensor (address hard coded)
+- BLE Speed Sensor
   - Current speed
   - Average speed
   - Total distance
   - Total moving time
-- BLE Cadence Sensor (address hard coded)
+- BLE Cadence Sensor
   - Current cadence
   - Average cadence
   - Total pedal revolutions
@@ -32,6 +32,7 @@ Features working
 
 
 Features to come:
+- BLE Heart Rate Sensor
 - Altitude (from GPS or pressure sensor?)
 - Cumulative ascent (daily?) - consider using GPS to calibrate altiude initially
 - Cumulative descent (daily?)
