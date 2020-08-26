@@ -1,5 +1,8 @@
 # Bicylocomputer
-Cycle computer using 4.3" Sharp memory LCD and Arduino Nano 33 BLE.
+Cycle computer using hardware:
+- 4.3" Sharp memory LCD 
+- Arduino Nano 33 BLE.
+- 3.3V voltage regulator
 
 Connects to Gadgetbridge on Android to display notifications, upload fitness data.
 
