@@ -13,6 +13,7 @@ Features working
   - Notifications from many apps
   - Current song title, artist
   - Time synchronisation
+  - Data logging (TBC)
 - BLE Speed Sensor
   - Current speed
   - Average speed
