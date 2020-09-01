@@ -1,6 +1,6 @@
 # Bicylocomputer
 Cycle computer made from:
-- 4.3" Sharp memory LCD 
+- 4.4" Sharp memory LCD (LS044Q7DH01)
 - Arduino Nano 33 BLE.
 - 3.3V voltage regulator (button cell or li-ion can be used)
 
